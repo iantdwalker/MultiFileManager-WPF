@@ -1,0 +1,130 @@
+<UserControl x:Class="FileRenamer.View.FileRenamerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"			 
+             xmlns:commands="clr-namespace:WPFHelpers.Commands;assembly=WPFHelpers"
+             xmlns:converters="clr-namespace:WPFHelpers.Converters;assembly=WPFHelpers"
+             xmlns:model="clr-namespace:FileRenamer.Model"              
+             Name="_fileRenamerView" FontFamily="Calibri" FontSize="13" Height="Auto" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">    
+	<UserControl.Resources>
+		<!-- A converter that binds Enums from the model to boolean values in radio buttons/check boxes etc -->
+		<converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+		<!-- A converter that takes in multiple booleans and returns a single result boolean -->
+		<!--<converters:MultiBooleanConverter x:Key="MultiBooleanConverter" />-->
+	</UserControl.Resources>	
+	<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        	<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="5*" />
+			<ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>		
+        
+		<!-- Select a file input folder controls -->
+		<Label Name="_labelFileInputFolder" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" Content="File Input Folder:" />
+        <TextBox Name="_textBoxFileInputFolder" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="5,5,5,5" Foreground="LightGray" Text="{Binding Path=InputFolderPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Name="_buttonFileInputFolder" Grid.Row="0" Grid.Column="3" Margin="5,5,5,5" Content="..." Command="{Binding SelectInputFolderCommand}" />	
+	
+		<!--File name trimming expander-->
+		<Expander Name="_expanderFileNameTrimming" Header="File Name Trimming"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,5" BorderBrush="Black" BorderThickness="1" IsExpanded="True">
+			<ScrollViewer Name="_scrollViewerExpanderFileNameTrimming" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+			    <Grid>
+			    	<Grid.RowDefinitions>
+			            <RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+			    		<RowDefinition Height="Auto" />
+			        </Grid.RowDefinitions>
+			        <Grid.ColumnDefinitions>
+			            <ColumnDefinition Width="Auto" />
+			            <ColumnDefinition Width="Auto" />
+			            <ColumnDefinition Width="Auto" />
+			        </Grid.ColumnDefinitions>
+					<CheckBox Name="_checkBoxTrimFileName" Grid.Row="0" Grid.Column="0" Margin="4,6,2,4" IsChecked="{Binding Path=TrimSettings.Trim, Mode=TwoWay}" Content="Trim the file name?" ToolTip="Select this option to ensure that the MultiFileManager applies one of the file name trimming processing options specified below." />
+					<Label Name="_labelTrimStringValue" Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" IsEnabled="{Binding Path=TrimSettings.Trim}" Content="Trim String:" />
+					<TextBox Name="_textBoxTrimStringValue" Grid.Row="1" Grid.Column="1" Margin="0,0,0,0" IsEnabled="{Binding Path=TrimSettings.Trim}" Text="{Binding Path=TrimSettings.TrimString, Mode=TwoWay}" />
+					<RadioButton Name="_radioButtonTrimExactValue" Grid.Row="2" Grid.Column="0" Margin="2,2,2,2" IsEnabled="{Binding Path=TrimSettings.Trim}" IsChecked="{Binding Path=TrimSettings.TrimType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:TrimType.RemoveExactTrimString}}" Content="Trim exact value" ToolTip="Select this option to trim the file name by removing the specified trim string value, if found." />
+				    <RadioButton Name="_radioButtonTrimBeforeValue" Grid.Row="2" Grid.Column="1" Margin="2,2,2,2" IsEnabled="{Binding Path=TrimSettings.Trim}" IsChecked="{Binding Path=TrimSettings.TrimType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:TrimType.TrimBeforeTrimString}}" Content="Trim before value" ToolTip="Select this option to trim the start of the file name before the specified trim string value is found." />
+				    <RadioButton Name="_radioButtonTrimAfterValue" Grid.Row="2" Grid.Column="2" Margin="2,2,2,2" IsEnabled="{Binding Path=TrimSettings.Trim}" IsChecked="{Binding Path=TrimSettings.TrimType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:TrimType.TrimAfterTrimString}}" Content="Trim after value" ToolTip="Select this option to trim the rest of the file name after the specified trim string value is found." />    
+				</Grid>
+			</ScrollViewer>
+		</Expander>		
+	
+		<!-- File name extension expander -->
+		<Expander Name="_expanderFileExtensionOptions" Header="File Name Extension" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,5,5,5" BorderBrush="Black" BorderThickness="1" IsExpanded="True">
+		    <ScrollViewer Name="_scrollViewerExpanderFileExtensionOptions" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+				<Grid>
+			    	<Grid.RowDefinitions>
+			            <RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+			    		<RowDefinition Height="Auto" />
+			        </Grid.RowDefinitions>
+			        <Grid.ColumnDefinitions>
+			            <ColumnDefinition Width="Auto" />
+			            <ColumnDefinition Width="Auto" />
+			            <ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+			        </Grid.ColumnDefinitions>
+					<CheckBox Name="_checkBoxModifyFileExtension" Grid.Row="0" Grid.Column="0" Margin="4,6,2,4" IsChecked="{Binding Path=ExtensionModifierSettings.ModifyExtension, Mode=TwoWay}" Content="Modify the file extension?" ToolTip="Select this option to ensure that the MultiFileManager applies one of the extension processing options specified below." />
+					<Label Name="_labelExactExtensionValue" Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" IsEnabled="{Binding Path=ExtensionModifierSettings.ExtensionType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:ExtensionType.ExactExtension}}" Content="Exact Extension Value:" />
+			    	<TextBox Name="_textBoxExactExtensionValue" Grid.Row="1" Grid.Column="1" Margin="0,0,0,0" IsEnabled="{Binding Path=ExtensionModifierSettings.ExtensionType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:ExtensionType.ExactExtension}}" Text="{Binding Path=ExtensionModifierSettings.ExactExtensionString, Mode=TwoWay}" />
+					<RadioButton Name="_radioButtonExactExtension" Grid.Row="2" Grid.Column="0" Margin="2,2,2,2" IsEnabled="{Binding Path=ExtensionModifierSettings.ModifyExtension}" IsChecked="{Binding Path=ExtensionModifierSettings.ExtensionType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:ExtensionType.ExactExtension}}" Content="Exact specified extension" ToolTip="Select this option to set the file's extension to the exact specified value: E.g: Supply 'txt' and then 'Image.jpg' will become 'Image.txt'." />
+				    <RadioButton Name="_radioButtonLowerCasextension" Grid.Row="2" Grid.Column="1" Margin="2,2,2,2" IsEnabled="{Binding Path=ExtensionModifierSettings.ModifyExtension}" IsChecked="{Binding Path=ExtensionModifierSettings.ExtensionType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:ExtensionType.LowerCaseExtension}}" Content="Lower case extension" ToolTip="Select this option to set the file's extension to lower case: E.g: 'Image.JPG' will become 'Image.jpg'." />
+				    <RadioButton Name="_radioButtonUpperCaseExtension" Grid.Row="2" Grid.Column="2" Margin="2,2,2,2" IsEnabled="{Binding Path=ExtensionModifierSettings.ModifyExtension}" IsChecked="{Binding Path=ExtensionModifierSettings.ExtensionType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:ExtensionType.UpperCaseExtension}}" Content="Upper case extension" ToolTip="Select this option to set the file's extension to upper case: E.g: 'Image.jpg' will become 'Image.JPG'." />
+					<RadioButton Name="_radioButtonRemoveExtension" Grid.Row="2" Grid.Column="3" Margin="2,2,2,2" IsEnabled="{Binding Path=ExtensionModifierSettings.ModifyExtension}" IsChecked="{Binding Path=ExtensionModifierSettings.ExtensionType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:ExtensionType.RemoveExtension}}" Content="Remove extension" ToolTip="Select this option to remove the extension from the file name: E.g: 'Notes.txt' will become 'Notes'." />
+				</Grid>
+			</ScrollViewer>
+		</Expander>
+		
+		<!--File name casing expander-->
+		<Expander Name="_expanderFileNameCasing" Header="File Name Casing"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,5" BorderBrush="Black" BorderThickness="1" IsExpanded="True">
+			<ScrollViewer Name="_scrollViewerExpanderFileNameCasing" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+			    <Grid>
+			    	<Grid.RowDefinitions>
+			            <RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+			    		<RowDefinition Height="Auto" />
+			        </Grid.RowDefinitions>
+			        <Grid.ColumnDefinitions>
+			            <ColumnDefinition Width="Auto" />
+			            <ColumnDefinition Width="Auto" />
+			            <ColumnDefinition Width="Auto" />
+			        </Grid.ColumnDefinitions>
+					<CheckBox Name="_checkBoxChangeFileNameCase" Grid.Row="0" Grid.Column="0" Margin="4,6,2,4" IsChecked="{Binding Path=CasingSettings.ModifyCase, Mode=TwoWay}" Content="Change the file name case?" ToolTip="Select this option to ensure that the MultiFileManager applies one of the file name casing options specified below." />
+					<RadioButton Name="_radioButtonPascalCase" Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" IsEnabled="{Binding Path=CasingSettings.ModifyCase}" IsChecked="{Binding Path=CasingSettings.CasingType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:CasingType.PascalCase}}" Content="To Pascal case" ToolTip="Select this option to ensure that new words will start with a capital letter. E.g. My File Name." />
+				    <RadioButton Name="_radioButtonUpperCase" Grid.Row="1" Grid.Column="1" Margin="2,2,2,2" IsEnabled="{Binding Path=CasingSettings.ModifyCase}" IsChecked="{Binding Path=CasingSettings.CasingType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:CasingType.UpperCase}}" Content="To upper case" ToolTip="Select this option to ensure that all words will be upper case. E.g. MY FILE NAME." />
+				    <RadioButton Name="_radioButtonLowerCase" Grid.Row="1" Grid.Column="2" Margin="2,2,2,2" IsEnabled="{Binding Path=CasingSettings.ModifyCase}" IsChecked="{Binding Path=CasingSettings.CasingType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static model:CasingType.LowerCase}}" Content="To lower case" ToolTip="Select this option to ensure that all words will be lower case. E.g. my file name." />    
+				</Grid>
+			</ScrollViewer>
+		</Expander>
+	
+		<!--  Progress Bar -->
+		<Grid Margin="5,5,5,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
+	        <ProgressBar Name="_progressBar" Minimum="0" Maximum="100" Height="25" Value="{Binding Path=ProcessingProgress, Mode=TwoWay}" />
+	        <TextBlock Name="_textBlockProgressBarPercentage" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ElementName=_progressBar, Path=Value, StringFormat={}{0:0}%}" />
+    	</Grid>
+	
+		<!-- Logging -->
+		<ScrollViewer Name="_scrollViewerTextBlockLogging" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="5,5,5,5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+			<Border Name="_borderTextBlockLogging" BorderThickness="1" BorderBrush="Black">
+				<TextBlock Name="_textBlockLogging" Text="{Binding Path=Logging, Mode=TwoWay}" Background="White" />			
+			</Border>
+		</ScrollViewer>		
+
+		<!-- Buttons -->
+		<DockPanel Name="_stackPanelButtons" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" Margin="5,5,5,5" LastChildFill="False">
+			<Button Name="_buttonClear" Content="Clear" DockPanel.Dock="Left" Command="{Binding ClearCommand}" />
+			<Button Name="_buttonExit" Content="Exit" DockPanel.Dock="Right" Margin="5,0,0,0" Command="commands:ViewCommands.ExitCommand" />
+			<Button Name="_buttonProcess" Content="Process" DockPanel.Dock="Right" Margin="0,0,5,0" Command="{Binding FileRenamerProcessCommand}" />
+		</DockPanel>
+    </Grid>	
+</UserControl>

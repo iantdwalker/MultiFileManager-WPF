@@ -1,0 +1,69 @@
+------------------
+-MultiFileManager-
+------------------
+
+-------------------
+-File Renaming Tab-
+-------------------
+
+1. File name trimming: 			*DONE*
+	trim exact string match		*DONE*
+	trim before string match	*DONE*
+	trim after string match		*DONE*
+2. File name extension:			*DONE*
+	exact ext			*DONE*
+	lower case ext			*DONE*
+	upper case ext			*DONE*
+	remove ext			*DONE*
+3. File name casing:			
+	new words capital (Pascal)
+	all words upper case
+	all words lower case
+
+4. Options:
+	recursive folder
+	file type filter by ext
+	replace underscore with space
+To-Do:
+------
+
+Research:
+1. Look into WPF exception handling options.
+
+General Coding:
+1. Add a background worker object for the file renaming processes.
+2. Add some CanExecute logic checks to the commands.
+3. Add recursive option and uncomment the related code within the file renamer process command.
+4. Add file type filter option and uncomment the related code within the file renamer process command.
+5. Add the other missing file renamer options.
+
+Graphical/GUI/XAML:
+1. Fix the logging scrollViewer/border layout issues.
+2. Fix/add multi-binding to the label/text box for the modify exact extension option (enabled if both modifyExtension/modify exact extension true).
+3. When a file input folder path is set change the font from light grey to black.
+4. Look into styling/look and feel options for the application. Blend?
+5 Introduce Prism and modules.
+
+----------
+-7zip tab-
+----------
+
+1. Input folder selector
+2. Output folder selector
+3. Path to 7-zip exe selector
+4. A file type filter for inclusions/exclusions
+5. Recursive option
+6. Background worker progeress bar
+7. Rich text box for logging output
+8. Buttons clear/process/exit
+9. Look into the emulator commands and see if it is possible to replicate via this application API.
+
+Resources to read:
+------------------
+
+1. http://msdn.microsoft.com/en-us/library/ms752347%28v=vs.110%29.aspx (data binding in detail)
+2. http://msdn.microsoft.com/en-us/library/ms752308.aspx (commands detailed overview)
+3. http://rachel53461.wordpress.com/about/ (interesting blog on some WPF bits and pieces)
+4. http://www.dotnet-tricks.com/Tutorial/designpatterns/Y3OI080713-Adapter-Design-Pattern---C (adapter pattern for NUnit testing of the F/S)
+5. http://bugsquash.blogspot.co.uk/2008/03/injectable-file-adapters.html
+6. http://stackoverflow.com/questions/664277/needed-file-system-interfaces-and-implementation-in-net

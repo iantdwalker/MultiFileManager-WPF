@@ -1,0 +1,11 @@
+<Window x:Class="MultiFileManager.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"		        
+        Name="_mainWindow" Title="MultiFileManager" Height="525" Width="525">
+    <Grid>
+        <TabControl Name="_tabControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Name="_tabItemFileRenaming" Header="File Renaming" />            
+            <TabItem Name="_tabItem7Zip" Header="7-Zip" Content="7-zip tab here" />           
+        </TabControl>
+    </Grid>
+</Window>

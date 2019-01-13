@@ -1,0 +1,32 @@
+grid rows:
+0: Height: Auto
+1: Height: Auto
+2: Height: Auto
+3: Height: *
+4: Height: Auto
+
+grid columns:
+0: Width: Auto
+1: Width: 50% whats left
+2: Width: 50% whats left
+3: Width: Auto
+
+controls:
+
+label: Row=0, column=0
+textBox: Row=0, column=1, columnspan=2
+button: Row=0, column=3
+
+trim expander: Row=1, column=0, columnspan=2
+ext expander: Row=1, column=2, columnspan=2
+
+progress bar: Row=2, column=0, columnspan=4
+
+logger: Row=3, column=0, columnspan=4
+
+buttons stack panel: Row=4, column=0, columnspan=4
+	button 1: horiz alignment=right
+	button 2: horiz alignment=right
+	button 3: horiz alignment=left
+
+
