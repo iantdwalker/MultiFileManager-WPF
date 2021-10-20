@@ -54,7 +54,7 @@
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="WPFHelpers">
-      <HintPath>..\..\..\Libraries\WPFHelpers\bin\Debug\WPFHelpers.dll</HintPath>
+      <HintPath>..\..\..\Libraries\WPFHelpers\bin\Release\WPFHelpers.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
